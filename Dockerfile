@@ -1,4 +1,4 @@
-FROM maven:3.8.4-openjdk-17 AS build
+FROM maven:4.0.0-rc-5-ibm-semeru-25-noble AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
