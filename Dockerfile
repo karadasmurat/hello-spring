@@ -1,13 +1,13 @@
 # Build stage
-FROM maven:4.0.0-rc-5-ibm-semeru-25-noble AS builder
+FROM  maven:4.0.0-rc-5-ibm-semeru-25-noble AS builder
 WORKDIR /app
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Runtime stage
-FROM eclipse-temurin:17-jdk-focal
+FROM eclipse-temurin:17-jre-focal
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
-EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]
