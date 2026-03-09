@@ -1,3 +1,7 @@
-FROM eclipse-temurin:17
-COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM maven:3.8.4-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jdk-focal
+COPY --from=build /target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
